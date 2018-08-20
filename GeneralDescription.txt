@@ -1,0 +1,29 @@
+  
+  This program is written by Rain Zhang, Luoyang Institute of Information
+Technology Industries (LYZK) in 2018.
+  This program is written and compiled in C++ language. So it can use the 
+advantage of C++ language, such as reuse, encapsulation and inheritance.
+  There are three complicated data type: enum, struct and class. All these
+complicated data type is named in CamelCase style. The name of class adds 
+a prefix "Lyzk", but enum and struct do not.
+  Every function needs return a code indicates the result of the function, 
+except Set or Reset functions. The return code has a prefix of "LYZK_" and 
+a suffix of "_ERR". The general return code is LYZK_FAILED (0) and 
+LYZK_SUCCESSED (1).
+  You should define some CONSTANT:
+    1. Define your device's package in "userdef.h" file and inlude "userdef.h"
+file in your "main.cpp" file.
+    If your device is a 36-pin device, you should define LYZK_STM32F10X_36PIN
+in UserDef.h file.
+    If your device is a 48-pin device, you should define LYZK_STM32F10X_48PIN
+in UserDef.h file.
+    If your device is a 64-pin device, you should define LYZK_STM32F10X_64PIN
+in UserDef.h file.
+    If your device is a 100-pin device, you should define LYZK_STM32F10X_100PIN
+in UserDef.h file.
+    If your device is a 144-pin device, you should define LYZK_STM32F10X_144PIN
+in UserDef.h file.
+    
+    2. Define whether use "printer" to output debug message.
+    The "printer" uses USART1 as the peripheral, baud rate is 115200, no
+hardware flow control, no parity, word length is 8.
