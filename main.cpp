@@ -1,6 +1,6 @@
 #include "userdef.h"
-#include "stdio.h"
 #include "LyzkUsart.h"
+#include <stdio.h>
 
 int main ()
 {
@@ -32,26 +32,5 @@ int main ()
     
     printer.PutChar ('0');
     printer.PutChar ('\r');
-    printer.PutChar ('\n');
-    
-    //printer.my_print ("Baud Rate is\r\n");
-    
-    printer.Printf ("Baud Rate is: %d\r\n", cfg.USART_BaudRate);
-    //printer.Printf ("Baud Rate is: %d\r\n");
-    
-    while (1)
-    {
-        for (i = 0; i < 1000000; i++)
-        {
-        }
-        gpio.Reset ();
-        
-        printer.Printf ("i = %d\r\n", i);
-        
-        for (i = 0; i < 1000000; i++)
-        {
-        }
-        gpio.Set ();
-        printer.Printf ("i = %d\r\n", i);
-    }
+    printer.PutChar ('\n');    
 }

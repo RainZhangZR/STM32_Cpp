@@ -20,8 +20,10 @@
 #define __LYZK_USART_H__
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_usart.h"
 #include "LyzkGpio.h"
+#include "stm32f10x_usart.h"
+
+#define MAX_PRINTF_BUFF_SIZE 509
 
 /* Define the MACRO that judge whether the PERIPH is a valid USART according  *
  * to the STM32 device used.                                                  *
