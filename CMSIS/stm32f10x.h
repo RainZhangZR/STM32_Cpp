@@ -2944,7 +2944,7 @@ typedef struct
 #define  NVIC_ISER_SETENA_31                 ((uint32_t)0x80000000)        /*!< bit 31 */
 
 /******************  Bit definition for NVIC_ICER register  *******************/
-#define  NVIC_ICER_CLRENA                    ((uint32_t)0xFFFFFFFF)        /*!< Interrupt clear-enable bits */
+#define  NVIC_ICER_CLRENA                   ((uint32_t)0xFFFFFFFF)        /*!< Interrupt clear-enable bits */
 #define  NVIC_ICER_CLRENA_0                  ((uint32_t)0x00000001)        /*!< bit 0 */
 #define  NVIC_ICER_CLRENA_1                  ((uint32_t)0x00000002)        /*!< bit 1 */
 #define  NVIC_ICER_CLRENA_2                  ((uint32_t)0x00000004)        /*!< bit 2 */

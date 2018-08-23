@@ -21,8 +21,6 @@
 #include "stdio.h"
 #include "stdint.h"
 
-#define print_ch(ch) PutChar(ch)
-
 LyzkUsart::LyzkUsart ()
 {
     m_bInitialized = false;
@@ -118,151 +116,35 @@ uint8_t LyzkUsart::GetChar ()
 
 int LyzkUsart::Printf (const char* strFmt, ...)
 {
-#define MAX_SIZE 400
     /* The number of charactersthat printed */
     int     iCnt = 0;
     
     /* The result string converted using snprintf () function in standard   *
      * library "stdio.h". */
-    char    strRslt [MAX_SIZE] = {0};
-
-    char    strTmp [17] = {0};
-    int     iTmp;
+    char    strRslt [MAX_PRINTF_BUFF_SIZE];
     int     i;
-
-    /* Arguments */
-    uint64_t    varUint;
-    int64_t     varInt;
-    double      varDbl;
-    char*       varStr;
 
     /* Declare a variable that will be refer to each argument in turn.      *
      * Type va_list is defined in "stdarg.h" file.                          */
-    va_list varList;
+    va_list argList;
     
     /* Macro va_start initializes "varList" to point to the first unnamed   *
      * argument. It must be called once before "varList" is used.           */
-    va_start (varList, strFmt);
+    va_start (argList, strFmt);
 
-    while (*strFmt)
+    iCnt = vsnprintf (strRslt, MAX_PRINTF_BUFF_SIZE, strFmt, argList);
+    
+    for (i = 0; i < iCnt; i++)
     {
-        /* Begin to extract formatted string */
-        if (*strFmt == '%')
-        {
-            i = 0;
-            strTmp [i] = *strFmt;
-
-            strFmt++;
-            i++;
-            
-            /* Extracting formatted string ended */
-            while (*strFmt  && (*strFmt != '%') && (*strFmt != 'c') 
-                            && (*strFmt != 's') && (*strFmt != 'd')
-                            && (*strFmt != 'i') && (*strFmt != 'o')
-                            && (*strFmt != 'x') && (*strFmt != 'X')
-                            && (*strFmt != 'u') && (*strFmt != 'f')
-                            && (*strFmt != 'F') && (*strFmt != 'e')
-                            && (*strFmt != 'E') && (*strFmt != 'g')
-                            && (*strFmt != 'G') && (*strFmt != 'n')
-                            && (*strFmt != 'p'))
-            {
-                strTmp [i] = *strFmt;
-                strFmt++;
-                i++;
-            }
-
-            strTmp [i] = *strFmt;
-
-            switch (*strFmt)
-            {
-            /* Only to print character of '%' */
-            case '%':
-                print_ch ('%');
-                iCnt++;
-                strFmt++;
-                break;
-            
-            /* Print string of string-type argument */
-            case 's':
-                varStr = va_arg (varList, char*);
-
-                iTmp = snprintf (strRslt, MAX_SIZE, strTmp, varStr);
-                
-                for (i = 0; i < iTmp; i++)
-                {
-                    print_ch (strRslt [i]);
-                    iCnt++;
-                }
-
-                strFmt++;
-                break;
-
-            /* Print string converted from integer-type argument */
-            case 'c':
-            case 'd':
-            case 'i':
-                varInt = va_arg (varList, int64_t);
-
-                iTmp = snprintf (strRslt, 23, strTmp, varInt);
-
-                for (i = 0; i < iTmp; i++)
-                {
-                    print_ch (strRslt [i]);
-                    iCnt++;
-                }
-
-                strFmt++;
-                break;
-
-            /* Print string converted from unsinged-integer-type argument */
-            case 'o':
-            case 'x':
-            case 'X':
-            case 'u':
-                varUint = va_arg (varList, uint64_t);
-
-                iTmp = snprintf (strRslt, 23, strTmp, varUint);
-
-                for (i = 0; i < iTmp; i++)
-                {
-                    print_ch (strRslt [i]);
-                    iCnt++;
-                }
-
-                strFmt++;
-                break;
-
-            /* Print string converted from float-type argument */
-            case 'f':
-            case 'F':
-            case 'e':
-            case 'E':
-            case 'g':
-            case 'G':
-            varDbl = va_arg (varList, double);
-
-            iTmp = snprintf (strRslt, MAX_SIZE, strTmp, varDbl);
-
-            for (i = 0; i < iTmp; i++)
-            {
-                print_ch (strRslt [i]);
-                iCnt++;
-            }
-
-                strFmt++;
-                break;
-            }
-        }
-        else
-        {
-            print_ch (*strFmt++);
-            iCnt++;
-        }
+        PutChar (strRslt [i]);
     }
 
     /* va_end does whatever clearup is necessary. It must be called before  *
      * the program returns.                                                 */
-    va_end (varList);
+    va_end (argList);
+    
+    /* Wait until all the characters of the converted string have been sent */
+    while (USART_GetFlagStatus (m_USARTx, USART_FLAG_TC) == RESET);
 
     return iCnt;
 }

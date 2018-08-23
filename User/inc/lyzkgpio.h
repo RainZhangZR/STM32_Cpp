@@ -23,9 +23,9 @@
 #define __LYZK_GPIO_H__
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_gpio.h"
 #include "lyzkerror.h"
 #include "userdef.h"
+#include "stm32f10x_gpio.h"
 
 // Define the MACRO that judge whether the PERIPH and PIN is really existed 
 // according to the device used.
